@@ -1,2 +1,2 @@
-# NotePad
-A new repo for Notepad
+# LuxNote
+An android notepad custom-made project.
