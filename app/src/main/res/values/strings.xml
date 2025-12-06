@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,29 +14,102 @@
 -->
 
 <resources>
-    <string name="app_name">NotePad</string>
+    <string name="app_name">LuxNote</string>
     <string name="live_folder_name">Notes</string>
 
-    <string name="title_edit_title">Note title:</string>
-    <string name="title_create">New note</string>
-    <string name="title_edit">Edit: %1$s</string>
+    <string name="title_edit_title">修改标题：</string>
+    <string name="title_create">新建笔记</string>
+    <string name="title_edit">编辑：%1$s</string>
     <string name="title_notes_list">Notes</string>
 
-    <string name="menu_add">New note</string>
-    <string name="menu_save">Save</string>
-    <string name="menu_delete">Delete</string>
-    <string name="menu_open">Open</string>
-    <string name="menu_revert">Revert changes</string>
-    <string name="menu_copy">Copy</string>
-    <string name="menu_paste">Paste</string>
+    <string name="menu_add">新建笔记</string>
+    <string name="menu_search">搜索</string>
+    <string name="menu_save">保存</string>
+    <string name="menu_delete">删除</string>
+    <string name="menu_open">打开</string>
+    <string name="menu_revert">撤销</string>
+    <string name="menu_copy">复制</string>
+    <string name="menu_paste">粘贴</string>
 
     <string name="button_ok">OK</string>
-    <string name="text_title">Title:</string>
+    <string name="text_title">标题：</string>
 
-    <string name="resolve_edit">Edit note</string>
-    <string name="resolve_title">Edit title</string>
+    <string name="resolve_edit">编辑笔记</string>
+    <string name="resolve_title">编辑标题</string>
 
-    <string name="error_title">Error</string>
-    <string name="error_message">Error loading note</string>
-    <string name="nothing_to_save">There is nothing to save</string>
+    <string name="error_title">错误</string>
+    <string name="error_message">笔记加载错误</string>
+    <string name="nothing_to_save">没有要保存的内容</string>
+    <string name="none_in_list">没有笔记。右上角新建一个吧～</string>
+
+    <string name="delete_note_dialog_title">删除笔记</string>
+    <string name="delete_note_dialog_message">您确定要删除这个笔记吗？该操作不可恢复！</string>
+    <string name="dialog_ok">确认</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="note_deleted_toast">笔记已删除</string>
+    <!-- ... 其他字符串 ... -->
+
+    <!-- 新增撤销相关字符串 -->
+    <string name="revert_dialog_title">放弃更改</string>
+    <string name="revert_dialog_message">您确定要放弃最近编辑的所有更改吗？</string>
+    <string name="revert_toast">撤销笔记更改</string>
+    <string name="untitled">无标题</string>
+    <!-- ... 其他字符串 ... -->
+
+    <string name="note_copied_toast">笔记已复制</string>
+    <string name="note_copy_failed_toast">复制笔记失败</string>
+    <string name="pasted_note_title">粘贴笔记</string>
+    <string name="note_pasted_toast">笔记已粘贴</string>
+    <string name="note_paste_failed_toast">粘贴笔记失败</string>
+    <string name="clipboard_empty_toast">剪贴板为空</string>
+    <string name="clipboard_no_text_toast">剪贴板中无文本内容可粘贴</string>
+
+    <string name="menu_search_hint">搜索笔记…</string>
+    <string name="search_by_title">按标题</string>
+    <string name="search_by_content">按内容</string>
+    <string name="search_results_format">找到 %d 个结果</string>
+    <string name="search_no_results">未找到匹配的笔记</string>
+
+    <string name="menu_settings">设置</string>
+    <!-- Theme Settings -->
+    <string name="theme_dark_mode_strategy_title">明暗策略</string>
+    <string name="theme_dark_mode_strategy_key">dark_mode_strategy</string>
+    <string-array name="dark_mode_entries">
+        <item>跟随系统</item>
+        <item>明色模式</item>
+        <item>暗色模式</item>
+    </string-array>
+    <string-array name="dark_mode_values">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+    <!-- ... 其他字符串 ... -->
+    <string name="folders">文件夹</string>
+    <string name="todos">待办</string>
+
+    <string name="folders_title">文件夹</string>
+    <string name="search_folders_hint">搜索文件夹</string>
+    <string name="folder_icon_description">文件夹图标</string>
+    <string name="title_activity_folder">文件夹</string>
+    <string name="menu_add_folder">新建文件夹</string>
+    <string name="note_count_subtitle">包含 %d 个笔记</string>
+    <string name="search_notes_hint">搜索笔记</string>
+    <string name="note_icon_description">笔记图标</string>
+    <string name="unclassified_folder_name">未分类</string>
+    <string name="title_select_notes">选择要添加的笔记</string>
+    <string name="subtitle_selected_notes">已选中 %d 条笔记</string>
+    <string name="confirm_selection">确认选择</string>
+    <string name="notes_added_successfully">笔记已成功添加</string>
+    <string name="word_count_format">%d 字</string>
+    <string name="menu_rename_folder">更改名称</string>
+    <string name="menu_delete_folder">删除</string>
+    <string name="delete_folder_dialog_title">删除文件夹？</string>
+    <string name="delete_folder_dialog_message">此文件夹包含 %d
+        个笔记。这些笔记将被移至“未分类”。确定要删除吗？
+    </string>
+    <string name="folder_deleted_toast">文件夹已删除</string>
+    <string name="copy_suffix">副本</string>
+
+    <!-- <string name="dialog_ok">确定</string> -->
 </resources>

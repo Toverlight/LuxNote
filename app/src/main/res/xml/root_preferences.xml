@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 使用 PreferenceCategory 来给设置项分组 -->
+    <PreferenceCategory app:title="外观">
+
+        <!-- 这是一个 Preference，代表一个设置项 -->
+        <!-- 点击它将会导航到另一个 PreferenceScreen (二级页面) -->
+        <Preference
+            app:key="theme"
+            app:title="主题"
+            app:summary="选择应用的主题颜色和明暗模式"
+            app:icon="@drawable/ic_palette">
+
+        </Preference>
+
+    </PreferenceCategory>
+
+    <!-- 未来可以添加更多分组和设置项 -->
+    <!--
+    <PreferenceCategory app:title="通用">
+        <SwitchPreferenceCompat
+            app:key="sync"
+            app:title="开启同步"
+            app:summary="自动同步您的笔记到云端"/>
+    </PreferenceCategory>
+    -->
+</androidx.preference.PreferenceScreen>

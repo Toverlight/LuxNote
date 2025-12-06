@@ -27,6 +27,7 @@ import android.provider.BaseColumns;
  */
 public final class NotePad {
     public static final String AUTHORITY = "com.google.provider.NotePad";
+    public static final String NOTE_COUNT_ALIAS = "notes_count";
 
     // This class cannot be instantiated
     private NotePad() {
@@ -74,11 +75,6 @@ public final class NotePad {
         public static final int NOTE_ID_PATH_POSITION = 1;
 
         /**
-         * Path part for the Live Folder URI
-         */
-        private static final String PATH_LIVE_FOLDER = "/live_folders/notes";
-
-        /**
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =  Uri.parse(SCHEME + AUTHORITY + PATH_NOTES);
@@ -96,12 +92,6 @@ public final class NotePad {
          */
         public static final Uri CONTENT_ID_URI_PATTERN
             = Uri.parse(SCHEME + AUTHORITY + PATH_NOTE_ID + "/#");
-
-        /**
-         * The content Uri pattern for a notes listing for live folders
-         */
-        public static final Uri LIVE_FOLDER_URI
-            = Uri.parse(SCHEME + AUTHORITY + PATH_LIVE_FOLDER);
 
         /*
          * MIME type definitions
@@ -121,7 +111,9 @@ public final class NotePad {
         /**
          * The default sort order for this table
          */
-        public static final String DEFAULT_SORT_ORDER = "modified DESC";
+        public static final String DEFAULT_SORT_ORDER = TABLE_NAME + ".modified DESC";
+
+        public static final int TITLE_MAX_LENGTH = 50;
 
         /*
          * Column definitions
@@ -150,5 +142,71 @@ public final class NotePad {
          * <P>Type: INTEGER (long from System.curentTimeMillis())</P>
          */
         public static final String COLUMN_NAME_MODIFICATION_DATE = "modified";
+
+        public static final String COLUMN_NAME_FOLDER_ID = "folder_id";
+    }
+
+    /**
+     * Folders table contract
+     */
+    public static final class Folders implements BaseColumns {
+        // 私有构造函数，防止实例化
+        private Folders() {}
+
+        /**
+         * The table name for folders
+         */
+        public static final String TABLE_NAME = "folders";
+
+        /**
+         * The URI scheme for the folders table
+         */
+        private static final String SCHEME = "content://";
+
+        /**
+         * The URI for the folders table
+         */
+        public static final Uri CONTENT_URI = Uri.parse(SCHEME + AUTHORITY + "/" + TABLE_NAME);
+
+        /**
+         * The URI for a single folder, followed by its ID.
+         */
+        public static final Uri CONTENT_ID_URI_BASE = Uri.parse(SCHEME + AUTHORITY + "/" + TABLE_NAME + "/");
+
+        /**
+         * The MIME type for a directory of folders.
+         */
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.google.folder";
+
+        /**
+         * The MIME type for a single folder.
+         */
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.google.folder";
+
+        /**
+         * The default sort order for this table
+         */
+        public static final String DEFAULT_SORT_ORDER = TABLE_NAME + ".modified DESC";
+
+        // Columns
+        /**
+         * The name of the folder.
+         * <P>Type: TEXT</P>
+         */
+        public static final String COLUMN_NAME_NAME = "name";
+
+        /**
+         * The creation date of the folder.
+         * <P>Type: INTEGER (long from System.curentTimeMillis())</P>
+         */
+        public static final String COLUMN_NAME_CREATE_DATE = "created";
+
+        /**
+         * The modification date of the folder.
+         * <P>Type: INTEGER (long from System.curentTimeMillis())</P>
+         */
+        public static final String COLUMN_NAME_MODIFICATION_DATE = "modified";
+
+        public static final int FOLDER_ID_PATH_POSITION = 1;
     }
 }

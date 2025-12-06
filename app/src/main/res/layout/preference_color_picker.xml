@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingTop="16dp"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="主体配色"
+        android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+    <ImageButton
+        android:id="@+id/reset_color_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="恢复默认颜色"
+        android:src="@drawable/ic_restore"
+        app:tint="?attr/colorOnSurfaceVariant" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/color_preview"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:cardBackgroundColor="?attr/colorPrimary"
+        app:cardCornerRadius="20dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorOutline"
+        android:clickable="false"
+        android:focusable="false"/>
+
+</LinearLayout>

@@ -21,8 +21,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 /**
  * This Activity allows the user to edit a note's title. It displays a floating window
@@ -33,7 +38,7 @@ import android.widget.EditText;
  * application should use the {@link android.content.AsyncQueryHandler}
  * or {@link android.os.AsyncTask} object to perform operations asynchronously on a separate thread.
  */
-public class TitleEditor extends Activity {
+public class TitleEditor extends BaseActivity {
 
     /**
      * This is a special intent action that means "edit the title of a note".
@@ -49,14 +54,14 @@ public class TitleEditor extends Activity {
     // The position of the title column in a Cursor returned by the provider.
     private static final int COLUMN_INDEX_TITLE = 1;
 
-    // A Cursor object that will contain the results of querying the provider for a note.
-    private Cursor mCursor;
-
     // An EditText object for preserving the edited title.
     private EditText mText;
 
     // A URI object for the note whose title is being edited.
     private Uri mUri;
+
+    // 用于判断是否真的修改了内容
+    private String mOriginalTitle;
 
     /**
      * This method is called by Android when the Activity is first started. From the incoming
@@ -73,48 +78,38 @@ public class TitleEditor extends Activity {
         // title we need to edit.
         mUri = getIntent().getData();
 
-        /*
-         * Using the URI passed in with the triggering Intent, gets the note.
-         *
-         * Note: This is being done on the UI thread. It will block the thread until the query
-         * completes. In a sample app, going against a simple provider based on a local database,
-         * the block will be momentary, but in a real app you should use
-         * android.content.AsyncQueryHandler or android.os.AsyncTask.
-         */
-
-        mCursor = managedQuery(
-            mUri,        // The URI for the note that is to be retrieved.
-            PROJECTION,  // The columns to retrieve
-            null,        // No selection criteria are used, so no where columns are needed.
-            null,        // No where columns are used, so no where values are needed.
-            null         // No sort order is needed.
-        );
-
         // Gets the View ID for the EditText box
-        mText = (EditText) this.findViewById(R.id.title);
-    }
+        mText = this.findViewById(R.id.title);
 
-    /**
-     * This method is called when the Activity is about to come to the foreground. This happens
-     * when the Activity comes to the top of the task stack, OR when it is first starting.
-     *
-     * Displays the current title for the selected note.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
+        // 1. 过滤换行符
+        InputFilter noNewLineFilter = (source, start, end, dest, dstart, dend) -> {
+            for (int i = start; i < end; i++) {
+                if (source.charAt(i) == '\n') {
+                    return ""; // Return an empty string to block the newline character
+                }
+            }
+            return null; // Accept the original replacement
+        };
 
-        // Verifies that the query made in onCreate() actually worked. If it worked, then the
-        // Cursor object is not null. If it is *empty*, then mCursor.getCount() == 0.
-        if (mCursor != null) {
+        // 2. 限制长度
+        InputFilter lengthFilter = new InputFilter.LengthFilter(NotePad.Notes.TITLE_MAX_LENGTH);
 
-            // The Cursor was just retrieved, so its index is set to one record *before* the first
-            // record retrieved. This moves it to the first record.
-            mCursor.moveToFirst();
+        // 3. 将过滤器应用到 EditText
+        mText.setFilters(new InputFilter[]{noNewLineFilter, lengthFilter});
 
-            // Displays the current title text in the EditText object.
-            mText.setText(mCursor.getString(COLUMN_INDEX_TITLE));
-        }
+        // 使用ViewModelProvider获取与此Activity关联的ViewModel
+        TitleViewModel viewModel = new ViewModelProvider(this).get(TitleViewModel.class);
+
+        // 观察ViewModel中的LiveData。当数据加载完成时，这个lambda表达式会被调用
+        viewModel.getTitle(this, mUri).observe(this, title -> {
+            // LiveData的数据回来了
+            if (title != null && mOriginalTitle == null) {
+                mOriginalTitle = title;
+                mText.setText(title);
+                // 将光标移动到文本末尾，方便编辑
+                mText.setSelection(title.length());
+            }
+        });
     }
 
     /**
@@ -132,33 +127,16 @@ public class TitleEditor extends Activity {
     protected void onPause() {
         super.onPause();
 
-        // Verifies that the query made in onCreate() actually worked. If it worked, then the
-        // Cursor object is not null. If it is *empty*, then mCursor.getCount() == 0.
+        String newTitle = mText.getText().toString();
 
-        if (mCursor != null) {
-
-            // Creates a values map for updating the provider.
+        if (!TextUtils.equals(newTitle, mOriginalTitle)) {
             ContentValues values = new ContentValues();
+            values.put(NotePad.Notes.COLUMN_NAME_TITLE, newTitle);
 
-            // In the values map, sets the title to the current contents of the edit box.
-            values.put(NotePad.Notes.COLUMN_NAME_TITLE, mText.getText().toString());
-
-            /*
-             * Updates the provider with the note's new title.
-             *
-             * Note: This is being done on the UI thread. It will block the thread until the
-             * update completes. In a sample app, going against a simple provider based on a
-             * local database, the block will be momentary, but in a real app you should use
-             * android.content.AsyncQueryHandler or android.os.AsyncTask.
-             */
-            getContentResolver().update(
-                mUri,    // The URI for the note to update.
-                values,  // The values map containing the columns to update and the values to use.
-                null,    // No selection criteria is used, so no "where" columns are needed.
-                null     // No "where" columns are used, so no "where" values are needed.
-            );
+            getContentResolver().update(mUri, values, null, null);
 
         }
+
     }
 
     public void onClickOk(View v) {
